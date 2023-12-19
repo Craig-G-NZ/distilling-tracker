@@ -4,13 +4,13 @@ This is a flask website used to track my distillations. From ingredients, fermen
 
 To use.....
 
-  docker run -d \\ \
-    --name distilling-tracker \\ \
-    --restart always \\ \
-    -p 80:80 \\ \
-    -v /data_dir:/app/data:z \\ \
-    -e TZ=Pacific/Auckland \\ \
-    skippynz/distilling-tracker:latest
+    docker run -d \\ \
+      --name distilling-tracker \\ \
+      --restart always \\ \
+      -p 80:80 \\ \
+      -v /data_dir:/app/data:z \\ \
+      -e TZ=Pacific/Auckland \\ \
+      skippynz/distilling-tracker:latest
 
 Create one directory: data
 
