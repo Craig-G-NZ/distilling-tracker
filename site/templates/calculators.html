@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ website_title }}</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div style="position: relative;">
+        <h1 class="heading heading1-emphasis">{{ website_name }}<a class="top-right-link" href="javascript:history.back()">Go Back</a></h1>
+    </div>
+
+    <div class="container">
+        <h2 class="heading2-emphasis">Calculate Alcohol By Volume (ABV)</h2>
+        <table class="form-table" style="width: 95%; margin: 0 auto;">
+            <tr>
+                <td style="width: 50%"><label for="initial_sg">Initial Specific Gravity:</label></td>
+                <td style="width: 50%"><input type="number" id="initial_sg" step="0.001"></td>
+            </tr>
+            <tr>
+                <td style="width: 50%"><label for="final_sg">Final Specific Gravity:</label></td>
+                <td style="width: 50%"><input type="number" id="final_sg" step="0.001"></td>
+            </tr>
+            <tr>
+                <td style="width: 50%"></td>
+                <td style="width: 50%"><button class="submit-button" onclick="calculateABV()">Calculate ABV</button></td>
+            </tr>
+            <tr>
+                <td style="width: 50%"><label>ABV Result:</label></td>
+                <td style="width: 50%"><div id="abv-result" class="container"></div></td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="container">
+        <h2 class="heading2-emphasis">Dilute - Bottle Quantity</h2>
+        <table class="form-table" style="width: 95%; margin: 0 auto;">
+            <tr>
+                <td style="width: 50%"><label for="base_abv">Starting ABV (%):</label></td>
+                <td style="width: 50%"><input type="number" id="base_abv" step="0.01"></td>
+            </tr>
+            <tr>
+                <td style="width: 50%"><label for="final_abv_bottle">Desired Final ABV (%):</label></td>
+                <td style="width: 50%"><input type="number" id="final_abv_bottle" step="0.01"></td>
+            </tr>
+            <tr>
+                <td style="width: 50%"><label for="target_volume">Target Volume (litres):</label></td>
+                <td style="width: 50%"><input type="number" id="target_volume" step="0.01"></td>
+            </tr>
+            <tr>
+                <td style="width: 50%"></td>
+                <td style="width: 50%"><button class="submit-button" onclick="calculateBottleComposition()">Calculate</button></td>
+            </tr>
+            <tr>
+                <td style="width: 50%"><label>Result:</label></td>
+                <td style="width: 50%"><div id="bottle-result" class="container"></div></td>
+            </tr>
+        </table>
+    </div>
+        
+    <div class="container">
+        <h2 class="heading2-emphasis">Dilute - Large Quantity</h2>
+        <table class="form-table" style="width: 95%; margin: 0 auto;">
+            <tr>
+                <td style="width: 50%"><label for="initial_abv">Starting ABV (%):</label></td>
+                <td style="width: 50%"><input type="number" id="initial_abv" step="0.01"></td>
+            </tr>
+            <tr>
+                <td style="width: 50%"><label for="final_abv">Desired Final ABV (%):</label></td>
+                <td style="width: 50%"><input type="number" id="final_abv" step="0.01"></td>
+            </tr>
+            <tr>
+                <td style="width: 50%"><label for="initial_volume">Initial Volume (litres):</label></td>
+                <td style="width: 50%"><input type="number" id="initial_volume" step="0.01"></td>
+            </tr>
+            <tr>
+                <td style="width: 50%"></td>
+                <td style="width: 50%"><button class="submit-button" onclick="calculateDilution()">Calculate</button></td>
+            </tr>
+            <tr>
+                <td style="width: 50%"><label>Result:</label></td>
+                <td style="width: 50%"><div id="dilute-result" class="container"></div></td>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        function calculateABV() {
+            const initialSG = parseFloat(document.getElementById("initial_sg").value);
+            const finalSG = parseFloat(document.getElementById("final_sg").value);
+
+            // Check that specific gravity values are within a valid range
+            if (initialSG < 0.990 || initialSG > 1.200 || finalSG < 0.990 || finalSG > 1.200) {
+                document.getElementById("abv-result").innerHTML = "Invalid specific gravity values. They should be between 0.990 and 1.200.";
+            } else {
+                const abv = (initialSG - finalSG) * 131.25;
+                document.getElementById("abv-result").innerHTML = `The Alcohol By Volume (ABV) is ${abv.toFixed(2)}%.`;
+            }
+        }
+
+        function calculateBottleComposition() {
+            const targetVolume = parseFloat(document.getElementById("target_volume").value);
+            const finalABV = parseFloat(document.getElementById("final_abv_bottle").value);
+            const baseABV = parseFloat(document.getElementById("base_abv").value);
+
+            // Calculate the amount of the base solution needed and any additional liquid (water) required
+            const baseSolutionVolume = (targetVolume * finalABV) / baseABV;
+            const additionalLiquidVolume = targetVolume - baseSolutionVolume;
+
+            if (!isNaN(baseSolutionVolume) && baseSolutionVolume >= 0 && !isNaN(additionalLiquidVolume) && additionalLiquidVolume >= 0) {
+                document.getElementById("bottle-result").innerHTML = `To make ${targetVolume.toFixed(2)} litres at ${finalABV}% ABV, use ${baseSolutionVolume.toFixed(2)} litres of ${baseABV}% ABV alcohol and add ${additionalLiquidVolume.toFixed(2)} litres of water.`;
+            } else {
+                document.getElementById("bottle-result").innerHTML = "Invalid input. Please check your values.";
+            }
+        }
+
+        function calculateDilution() {
+            const initialABV = parseFloat(document.getElementById("initial_abv").value);
+            const initialVolume = parseFloat(document.getElementById("initial_volume").value);
+            const finalABV = parseFloat(document.getElementById("final_abv").value);
+
+            const dilutionVolume = ((initialABV - finalABV) * initialVolume) / finalABV;
+
+            if (!isNaN(dilutionVolume) && dilutionVolume >= 0) {
+                document.getElementById("dilute-result").innerHTML = `To reach ${finalABV}% ABV, add ${dilutionVolume.toFixed(2)} litres of water.`;
+            } else {
+                document.getElementById("dilute-result").innerHTML = "Invalid input. Please check your values.";
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ website_title }}</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div style="position: relative;">
+        <h1 class="heading heading1-emphasis">{{ website_name }}<a class="top-right-link" href="calculators.html">Calculators</a></h1>
+    </div>
+    
+    <div class="container">
+        <h2 class="heading2-emphasis">Submit a New Entry</h2>
+        <form action="/submit" method="post">
+            <table class="form-table" style="width: 95%; margin: 0 auto;">
+                <tr>
+                    <td><label for="batch">Batch #:</label></td>
+                    <td><input type="number" id="batch" name="batch" required></td>
+                </tr>
+                <tr>
+                    <td><label for="recipe">Recipe:</label></td>
+                    <td><input type="text" id="recipe" name="recipe" required></td>
+                </tr>
+                <tr>
+                    <td><label for="start_date">Fermentation Start Date:</label></td>
+                    <td><input type="date" id="start_date" name="start_date" required></td>
+                </tr>
+                <tr>
+                    <td><label for="ingredients">Ingredients Used:</label></td>
+                    <td><textarea id="ingredients" name="ingredients" rows="5" required></textarea></td>
+                </tr>
+                <tr>
+                    <td><label for="ph">PH:</label></td>
+                    <td><input type="text" id="ph" name="ph" required></td>
+                </tr>
+                <tr>
+                    <td><label for="sg">Starting Gravity:</label></td>
+                    <td><input type="text" id="sg" name="sg" required></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Submit" class="submit-button"></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <br>
+    <h2 class="heading2-emphasis">Homemade Spirits Data</h2>
+    <table style="width: 95%; margin: 0 auto;">
+        <tr>
+            <th style="width: 90px">Batch #</th>
+            <th style="width: 90px">Recipe</th>
+            <th style="width: 90px">Fermentation<br />Start Date</th>
+            <th>Ingredients<br />Used</th>
+            <th style="width: 90px">PH</th>
+            <th style="width: 90px">Starting Specific<br />Gravity</th>
+            <th style="width: 90px">Final Specific<br />Gravity</th>
+            <th style="width: 90px">Fermentation<br />End Date</th>
+            <th style="width: 90px">Distillation<br />Start Time</th>
+            <th style="width: 90px">Distillation<br />End Time</th>
+            <th style="width: 90px">Distilling<br />Conditioner Used</th>
+            <th style="width: 90px"># of Litres<br />Distilled</th>
+            <th style="width: 90px">Percentage<br />ABV</th>
+            <th style="width: 125px"></th>
+        </tr>
+        {% for entry in spirits_data|reverse %} {# This line reverses the list #}
+        <tr>
+            <td>{{ entry[0] }}</td>
+            <td>{{ entry[1] }}</td>
+            <td>{{ entry[2] }}</td>
+            <td>{{ entry[3]|replace('\n', '<br>')|safe }}</td>
+            <td>{{ entry[4] }}</td>
+            <td>{{ entry[5] }}</td>
+            <td>{{ entry[6] }}</td>
+            <td>{{ entry[7] }}</td>
+            <td>{{ entry[8] }} hrs</td>
+            <td>{{ entry[9] }} hrs</td>
+            <td>{{ entry[10] }}</td>
+            <td>{{ entry[11] }} Litres</td>
+            <td>{{ entry[12] }}</td>
+            <td>
+                <a class="edit-link" href="/edit/{{ entry[0] }}">Edit</a>
+                <a class="delete-link" href="/delete/{{ entry[0] }}">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ website_title }}</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1 class="heading heading1-emphasis">{{ website_name }}<a class="top-right-link" href="javascript:history.back()">Go Back</a></h1>
+    <div class="container">
+        <h2 class="heading2-emphasis">Update an Entry</h2>
+        <form action="/edit/{{ batch }}" method="post">
+            <table class="form-table" style="width: 95%; margin: 0 auto;"> {# Use the form-table class #}
+                <tr>
+                    <td><label for="batch">Batch #:</label></td>
+                    <td><input type="number" id="batch" name="batch" value="{{ data[0] }}" readonly></td>
+                </tr>
+                <tr>
+                    <td><label for="recipe">Recipe:</label></td>
+                    <td><input type="text" id="recipe" name="recipe" value="{{ data[1] }}" required></td>
+                </tr>
+                <tr>
+                    <td><label for="start_date">Fermentation Start Date:</label></td>
+                    <td><input type="date" id="start_date" name="start_date" value="{{ data[2] }}" required></td>
+                </tr>
+                <tr>
+                    <td><label for="ingredients">Ingredients Used:</label></td>
+                    <td><textarea id="ingredients" name="ingredients" rows="5" required>{{ data[3] }}</textarea></td>
+                </tr>
+                <tr>
+                    <td><label for="ph">PH:</label></td>
+                    <td><input type="text" id="ph" name="ph" value="{{ data[4] }}" required></td>
+                </tr>
+                <tr>
+                    <td><label for="sg">Starting Gravity:</label></td>
+                    <td><input type="text" id="sg" name="sg" value="{{ data[5] }}" required></td>
+                </tr>
+                <tr>
+                    <td><label for="fg">Final Gravity:</label></td>
+                    <td><input type="text" id="fg" name="fg" value="{{ data[6] }}" required></td>
+                </tr>
+                <tr>
+                    <td><label for="end_date">Fermentation End Date:</label></td>
+                    <td><input type="date" id="end_date" name="end_date" value="{{ data[7] }}" required></td>
+                </tr>
+                <tr>
+                    <td><label for="start_time">Distillation Start Time:</label></td>
+                    <td><input type="text" id="start_time" name="start_time" value="{{ data[8] }}" required></td>
+                </tr>
+                <tr>
+                    <td><label for="end_time">Distillation End Time:</label></td>
+                    <td><input type="text" id="end_time" name="end_time" value="{{ data[9] }}" required></td>
+                </tr>
+                <tr>
+                    <td><label for="distilling_conditioner">Distilling Conditioner Used:</label></td>
+                    <td>
+                        <select id="distilling_conditioner" name="distilling_conditioner">
+                            <option value="yes" {% if data[10] == "yes" %}selected{% endif %}>Yes</option>
+                            <option value="no" {% if data[10] == "no" %}selected{% endif %}>No</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="litres_distilled"># of Litres Distilled:</label></td>
+                    <td><input type="text" id="litres_distilled" name="litres_distilled" value="{{ data[11] }}" required></td>
+                </tr>
+                <tr>
+                    <td><label for="percentage">Percentage ABV:</label></td>
+                    <td><input type="text" id="percentage" name="percentage" value="{{ data[12] }}" required></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Update" class="submit-button"></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</body>
+</html>
