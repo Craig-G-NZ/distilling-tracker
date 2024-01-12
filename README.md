@@ -20,3 +20,6 @@ Optional: Create a directory: and name it whatever you want e.g. data_dir - this
     }   
 
 Feel free to create an issue if you want to discuss anything.
+
+![image](https://github.com/Craig-G-NZ/distilling-tracker/assets/92700720/1e949236-d38e-417e-af1c-b4397548f546)
+![image](https://github.com/Craig-G-NZ/distilling-tracker/assets/92700720/af3cb8b0-e110-4fc4-8e27-13853df857bb)
